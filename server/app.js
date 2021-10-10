@@ -1,15 +1,41 @@
+
+const result = require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 const app = express()
+const cors = require('cors')
+
 module.exports = app
 
+
+const uri = `mongodb+srv://demo:${process.env.MONGO_ATLAS_PW}@cluster0.3jrxk.mongodb.net/userdatabase?retryWrites=true&w=majority`
+mongoose.connect(uri, {useNewUrlParser:true})
+
+
+const connection = mongoose.connection;
+connection.once('open', ()=> {
+  console.log("MongoDB database connection established")
+})
+
+// const port = process.env.PORT || 8080
+
+
+// mongoose.model('users', {
+//   username: String,
+//   password:String
+// })
 // logging middleware
 app.use(morgan('dev'))
 
 // body parsing middleware
+app.use(cors());
 app.use(express.json())
 
+// app.listen(port, () => {
+//   console.log(`server is running on port: ${port}`);
+// })
 // auth and api routes
 app.use('/auth', require('./auth'))
 app.use('/api', require('./api'))
@@ -20,15 +46,15 @@ app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
-app.use((req, res, next) => {
-  if (path.extname(req.path).length) {
-    const err = new Error('Not found')
-    err.status = 404
-    next(err)
-  } else {
-    next()
-  }
-})
+// app.use((req, res, next) => {
+//   if (path.extname(req.path).length) {
+//     const err = new Error('Not found')
+//     err.status = 404
+//     next(err)
+//   } else {
+//     next()
+//   }
+// })
 
 // sends index.html
 app.use('*', (req, res) => {

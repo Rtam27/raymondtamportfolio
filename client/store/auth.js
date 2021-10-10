@@ -19,11 +19,13 @@ const setAuth = auth => ({type: SET_AUTH, auth})
 export const me = () => async dispatch => {
   const token = window.localStorage.getItem(TOKEN)
   if (token) {
+    console.log('hey this me() thunk worked',token)
     const res = await axios.get('/auth/me', {
       headers: {
         authorization: token
       }
     })
+    console.log('this is the res',res,'might need to redirect?' )
     return dispatch(setAuth(res.data))
   }
 }
@@ -32,6 +34,7 @@ export const authenticate = (username, password, method) => async dispatch => {
   try {
     const res = await axios.post(`/auth/${method}`, {username, password})
     window.localStorage.setItem(TOKEN, res.data.token)
+    console.log('dispatching me!')
     dispatch(me())
   } catch (authError) {
     return dispatch(setAuth({error: authError}))
