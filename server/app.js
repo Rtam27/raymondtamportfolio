@@ -10,7 +10,7 @@ const cors = require('cors')
 module.exports = app
 
 
-const uri = `mongodb+srv://demo:${process.env.MONGO_ATLAS_PW}@cluster0.3jrxk.mongodb.net/userdatabase?retryWrites=true&w=majority`
+const uri = process.env.MONGO_ATLAS
 mongoose.connect(uri, {useNewUrlParser:true})
 
 
