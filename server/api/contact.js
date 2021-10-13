@@ -8,8 +8,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'raytam2792@gmail.com',
-      pass: 'Welcome#12'
+      user: 
+      pass: 
     }
   });
 
@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) => {
         // console.log('lol', req.body)
         const mailOptions = {
             from: `${req.body.Email}`,
-            to: 'raytam2792@gmail.com',
+            to: 
             subject: `${req.body.Name} sent a message from ${req.body.Email}!`,
             text: `Name: ${req.body.Name} Email: ${req.body.Email}
             ${req.body.Content}`
