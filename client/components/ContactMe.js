@@ -1,165 +1,103 @@
 import React, { useState, useEffect, useRef } from "react";
-import {connect} from 'react-redux'
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { connect, useDispatch, useSelector } from "react-redux";
+import {sendContactThunk} from "../store/ContactMe"
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const ContactMe = () => {
-    return (
-        <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <TextField
-          id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          id="filled-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-search"
-          label="Search field"
-          type="search"
-          variant="filled"
-        />
-        <TextField
-          id="filled-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="filled"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="standard-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          disabled
-          id="standard-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          id="standard-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="standard"
-        />
-        <TextField
-          id="standard-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-search"
-          label="Search field"
-          type="search"
-          variant="standard"
-        />
-        <TextField
-          id="standard-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="standard"
-        />
-      </div>
-    </Box>
-    )
-}
+  const [Name, setName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Content, setContent] = useState("");
+  const dispatch = useDispatch();
+  const infoSent = {
+    Name,
+    Email,
+    Content
+  }
+
+  function handleName() {
+    setName(event.target.value);
+  }
+
+  function handleEmail() {
+    setEmail(event.target.value);
+  }
+
+  function handleContent() {
+    setContent(event.target.value);
+  }
+
+  function handleSubmit(){
+    dispatch(sendContactThunk(infoSent))
+    setName("")
+    setEmail("")
+    setContent("")
+  }
+
+  return (
+    <div>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "300ch" },
+        }}
+        noValidate
+        autoComplete="off"
+        inputProps={{
+          style:{
+            display:"flex"
+          }
+        }}
+      >
+        <div id="contactmefield">
+          <TextField
+            id="outlined-basic"
+            label="Name"
+            variant="outlined"
+            inputProps={{
+              onChange: handleName,
+              value: Name,
+              style: { textAlign: "left" },
+            }}
+          />
+
+          <TextField
+            id="outlined-basic"
+            label="Email Address"
+            variant="outlined"
+            inputProps={{
+              onChange: handleEmail,
+              value: Email,
+              style: { textAlign: "left" },
+            }}
+          />
+
+          <TextField
+            id="standard-multiline-flexible"
+            label="Message Content"
+            multiline
+            maxRows={20}
+            // value={value}
+            // onChange={handleChange}
+            inputProps={{
+              onChange: handleContent,
+              value: Content,
+
+              style: { textAlign: "left", height: 100 },
+            }}
+          />
+        </div>
+      </Box>
+      <Button
+        onClick={() => {
+          handleSubmit()
+        }}
+      >
+        Click me
+      </Button>
+    </div>
+  );
+};
 
 export default ContactMe;
